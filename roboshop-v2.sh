@@ -52,6 +52,7 @@ do
         else
             echo "roboshop-$instance already running: $INSTANCE_ID"
         fi
+    fi    
 
         # update R53 record
 #         if [ $instance == "frontend" ]; then
