@@ -26,28 +26,28 @@ if [ "$ACTION" != "create" ] && [ "$ACTION" != "delete" ]; then
     exit 1
 fi
 
-# get_instance_id(){
-#     name=$1
-#     aws ec2 describe-instances --filters "Name=tag:Name,Values=roboshop-$name" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text
-# }
+get_instance_id(){
+    name=$1
+    aws ec2 describe-instances --filters "Name=tag:Name,Values=roboshop-$name" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text
+}
 
-# for instance in $@
-# do
-#     INSTANCE_ID=$(get_instance_id $instance)
-#     if [ $ACTION == "create" ]; then
-#         if [ $INSTANCE_ID == "None" ]; then
-#             echo "Launching Instance: roboshop-$instance"
-#             INSTANCE_ID=$( aws ec2 run-instances \
-#             --image-id $AMI_ID \
-#             --instance-type t3.micro \
-#             --security-groups "shell-scripting" "$instance-roboshop" \
-#             --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
-#             --query 'Instances[0].InstanceId' \
-#             --output text 
-#             )
-#             echo "Launched Instance: $INSTANCE_ID"
-#             aws ec2 wait instance-running --instance-ids $INSTANCE_ID
-#             echo "Instance is running: $INSTANCE_ID"
+for instance in $@
+do
+    INSTANCE_ID=$(get_instance_id $instance)
+    if [ $ACTION == "create" ]; then
+        if [ $INSTANCE_ID == "None" ]; then
+            echo "Launching Instance: roboshop-$instance"
+            INSTANCE_ID=$( aws ec2 run-instances \
+            --image-id $AMI_ID \
+            --instance-type t3.micro \
+            --security-groups "shell-scripting" "$instance-roboshop" \
+            --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
+            --query 'Instances[0].InstanceId' \
+            --output text 
+            )
+            echo "Launched Instance: $INSTANCE_ID"
+            aws ec2 wait instance-running --instance-ids $INSTANCE_ID
+            echo "Instance is running: $INSTANCE_ID"
 
 #         else
 #             echo "roboshop-$instance already running: $INSTANCE_ID"
@@ -101,16 +101,16 @@ fi
 #     fi
 # done
 
-# # ================================================================
-# # ASSIGNMENT 2 — roboshop-v3.sh (Handle stopped instances)
-# # ================================================================
+# # # ================================================================
+# # # ASSIGNMENT 2 — roboshop-v3.sh (Handle stopped instances)
+# # # ================================================================
 
-# # roboshop-v2.sh only checks for "running" instances.
-# # A stopped instance is treated as non-existent — it gets re-created
-# # instead of re-started, and on delete it is silently skipped.
+# # # roboshop-v2.sh only checks for "running" instances.
+# # # A stopped instance is treated as non-existent — it gets re-created
+# # # instead of re-started, and on delete it is silently skipped.
 
-# # Improve it so that:
+# # # Improve it so that:
 
-# #   - If create and instance is stopped, start it instead of launching new
-# #   - If delete and instance is stopped, terminate it and delete R53 record
-# #   - If delete and instance is running, terminate it and delete R53 record
+# # #   - If create and instance is stopped, start it instead of launching new
+# # #   - If delete and instance is stopped, terminate it and delete R53 record
+# # #   - If delete and instance is running, terminate it and delete R53 record
