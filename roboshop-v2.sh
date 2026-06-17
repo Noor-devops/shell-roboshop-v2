@@ -49,11 +49,11 @@ do
             aws ec2 wait instance-running --instance-ids $INSTANCE_ID
             echo "Instance is running: $INSTANCE_ID"
 
-#         else
-#             echo "roboshop-$instance already running: $INSTANCE_ID"
-#         fi
+        else
+            echo "roboshop-$instance already running: $INSTANCE_ID"
+        fi
 
-#         # update R53 record
+        # update R53 record
 #         if [ $instance == "frontend" ]; then
 #             IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID \
 #             --query 'Reservations[*].Instances[*].PublicIpAddress' \
@@ -101,16 +101,16 @@ do
 #     fi
 # done
 
-# # # ================================================================
-# # # ASSIGNMENT 2 — roboshop-v3.sh (Handle stopped instances)
-# # # ================================================================
+# ================================================================
+# ASSIGNMENT 2 — roboshop-v3.sh (Handle stopped instances)
+# ================================================================
 
-# # # roboshop-v2.sh only checks for "running" instances.
-# # # A stopped instance is treated as non-existent — it gets re-created
-# # # instead of re-started, and on delete it is silently skipped.
+# roboshop-v2.sh only checks for "running" instances.
+# A stopped instance is treated as non-existent — it gets re-created
+# instead of re-started, and on delete it is silently skipped.
 
-# # # Improve it so that:
+# Improve it so that:
 
-# # #   - If create and instance is stopped, start it instead of launching new
-# # #   - If delete and instance is stopped, terminate it and delete R53 record
-# # #   - If delete and instance is running, terminate it and delete R53 record
+#   - If create and instance is stopped, start it instead of launching new
+#   - If delete and instance is stopped, terminate it and delete R53 record
+#   - If delete and instance is running, terminate it and delete R53 record
